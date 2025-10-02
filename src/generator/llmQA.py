@@ -1,12 +1,14 @@
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from generator.tools import get_llm
 
-def run_qa_query(retriever, query, llm_model_name="gpt-4o-mini", temperature=0):
+def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
     """
     Runs a RetrievalQA chain on the given query using the retriever.
     """
-    llm = ChatOpenAI(model_name=llm_model_name, temperature=temperature)
+    # Use LLM from tools.py
+    llm = get_llm(model_name=llm_model_name, temperature=temperature)
 
     # Define a custom prompt template
     PROMPT_TEMPLATE = """
