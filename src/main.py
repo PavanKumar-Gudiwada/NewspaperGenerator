@@ -1,4 +1,4 @@
-from src.pipeline.rag_llm_pipeline import rag_llm_pipeline
+from pipeline.rag_llm_pipeline import rag_llm_pipeline
 import torch
 
 if __name__ == "__main__":

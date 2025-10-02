@@ -1,6 +1,6 @@
-from src.retriever.dataLoader import load_all_data
-from src.retriever.vectorStore import build_retriever_from_texts
-from src.generator.llmQA import run_qa_query
+from retriever.dataLoader import load_all_data
+from retriever.vectorStore import build_retriever_from_texts
+from generator.llmQA import run_qa_query
 
 def rag_llm_pipeline(data_folder="data", query="What is the main topic of the documents?"):
     # 1. Load documents
