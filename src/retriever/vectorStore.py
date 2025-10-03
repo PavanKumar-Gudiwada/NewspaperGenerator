@@ -1,9 +1,10 @@
 import os
 import torch
 from dotenv import load_dotenv
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from retriever.dataLoader import load_all_data
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from huggingface_hub import login
 
@@ -19,7 +20,7 @@ login()
 # Define directory to save/load FAISS index files
 INDEX_DIR = "./faiss_index"
 
-def build_retriever_from_texts(texts, embedding_model_name="google/embeddinggemma-300M", chunk_size=500, chunk_overlap=50, k=5):
+def build_retriever_from_texts(embedding_model_name="google/embeddinggemma-300M", chunk_size=500, chunk_overlap=50, k=5):
     """
     Split texts, create embeddings, and return a LangChain retriever.
     """
@@ -31,9 +32,12 @@ def build_retriever_from_texts(texts, embedding_model_name="google/embeddinggemm
         vector_store = FAISS.load_local(INDEX_DIR, hf_embeddings, allow_dangerous_deserialization=True)
     else:
         print("Building new FAISS index...")
+        # Load documents
+        all_texts = load_all_data("data")
+
         # Split texts
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-        chunks = text_splitter.split_text(" ".join(texts))
+        chunks = text_splitter.split_text(" ".join(all_texts))
 
         # Create embeddings
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
