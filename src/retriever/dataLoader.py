@@ -1,45 +1,45 @@
 import os
-import pandas as pd
-from PyPDF2 import PdfReader
-from PIL import Image
-import pytesseract
+from langchain_community.document_loaders import (
+    PyPDFLoader,
+    CSVLoader,
+    UnstructuredExcelLoader,
+    UnstructuredImageLoader,
+)
+from langchain_core.documents import Document
 
-def load_all_data(data_folder = "data"):
+
+def load_all_data(data_folder="data"):
     """
-    Load and combine text data from structured (CSV, Excel) and unstructured (PDF, images) files.
+    Load and combine documents from structured (CSV, Excel)
+    and unstructured (PDF, images) files using LangChain loaders.
+
+    Returns:
+        List[Document]: List of LangChain Document objects with metadata.
     """
-    
     structured_folder = os.path.join(data_folder, "structured")
     unstructured_folder = os.path.join(data_folder, "un_structured")
 
-    all_texts = []
+    docs = []
 
     # --- Load structured data ---
     for file in os.listdir(structured_folder):
         file_path = os.path.join(structured_folder, file)
         if file.endswith(".csv"):
-            df = pd.read_csv(file_path)
-            all_texts.append(df.to_string())
+            loader = CSVLoader(file_path)
+            docs.extend(loader.load())
         elif file.endswith((".xlsx", ".xls")):
-            df = pd.read_excel(file_path)
-            all_texts.append(df.to_string())
+            loader = UnstructuredExcelLoader(file_path, mode="elements")
+            docs.extend(loader.load())
 
     # --- Load unstructured data ---
     for file in os.listdir(unstructured_folder):
         file_path = os.path.join(unstructured_folder, file)
         if file.endswith(".pdf"):
-            reader = PdfReader(file_path)
-            text = ""
-            for page in reader.pages:
-                text += page.extract_text() or ""
-            all_texts.append(text)
+            loader = PyPDFLoader(file_path)
+            docs.extend(loader.load())
         elif file.endswith((".png", ".jpeg", ".jpg")):
-            image = Image.open(file_path)
-            text = pytesseract.image_to_string(image)
-            all_texts.append(text)
+            loader = UnstructuredImageLoader(file_path)
+            docs.extend(loader.load())
 
-    # --- Combine all text ---
-    combined_text = "\n".join(all_texts)
-    print("Loaded text length:", len(combined_text))
-
-    return combined_text
+    print(f"Loaded {len(docs)} documents.")
+    return docs

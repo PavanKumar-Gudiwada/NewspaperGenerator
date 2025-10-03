@@ -5,15 +5,15 @@ import unittest
 # --- Path setup to allow 'from src...' imports ---
 # Add the project root to sys.path
 print("current file",os.path.join(os.path.dirname(__file__), '..'))
-project_root = os.path.abspath(r"c:\Users\pgudi\Documents\FAU\NewspaperGenerator\src")
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 sys.path.insert(0, project_root)
 
-from retriever.vectorStore import build_retriever_from_texts
+from retriever.vectorStore import build_retriever_from_docs
 
 class TestRAGPipeline(unittest.TestCase):
     def setUp(self):
         # Build retriever (use a small chunk size for speed in tests)
-        self.retriever = build_retriever_from_texts(
+        self.retriever = build_retriever_from_docs(
             embedding_model_name="google/embeddinggemma-300M",
             chunk_size=500,
             chunk_overlap=50,

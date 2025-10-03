@@ -31,4 +31,6 @@ dependencies = [
     # LangSmith optional
     "langsmith>=0.4.31",
     "langchain-ollama>=0.3.10",
+    "unstructured[excel,image]>=0.6.7",
+    "msoffcrypto-tool>=5.4.2",
 ]
