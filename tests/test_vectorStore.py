@@ -25,7 +25,7 @@ class TestRAGPipeline(unittest.TestCase):
         queries = [
             "What is the main topic of the documents?",
             "write an article on financial growth of mercedes benz between 2023 and 2024.",
-            "Write an article on distribution of cumulative covid cases across different nations.",
+            "Write an article on distribution of number of covid cases across different nations.",
             "What is the climate action plan of mercedes benz in 2025 and how is it different from 2024?",
         ]
         for query in queries:

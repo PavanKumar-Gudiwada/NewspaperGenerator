@@ -7,5 +7,5 @@ def rag_llm_pipeline(data_folder="data", query="What is the main topic of the do
     retriever = build_retriever_from_docs()
 
     # 2. Run query
-    answer = run_qa_query(retriever, query)
+    answer = run_qa_query(retriever, query, temperature=0.3)
     print("Answer:", answer)

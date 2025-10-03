@@ -1,4 +1,4 @@
-Name,WHO Region,Cases - cumulative total,Cases - cumulative total per 100000 population,Cases - newly reported in last 7 days,Cases - newly reported in last 7 days per 100000 population,Cases - newly reported in last 24 hours,Deaths - cumulative total,Deaths - cumulative total per 100000 population,Deaths - newly reported in last 7 days,Deaths - newly reported in last 7 days per 100000 population,Deaths - newly reported in last 24 hours
+Name,WHO Region,COVID Cases - cumulative total,COVID Cases - cumulative total per 100000 population,COVID Cases - newly reported in last 7 days,COVID Cases - newly reported in last 7 days per 100000 population,COVID Cases - newly reported in last 24 hours,COVID Deaths - cumulative total,COVID Deaths - cumulative total per 100000 population,COVID Deaths - newly reported in last 7 days,COVID Deaths - newly reported in last 7 days per 100000 population,COVID Deaths - newly reported in last 24 hours
 Belarus,Europe,994052,10520,,,,7118,75,,,
 China,Western Pacific,99381761,6755,0,,0,122398,8,0,,0
 French Guiana,,98041,32825,,,,413,138,,,

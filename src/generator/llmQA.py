@@ -14,6 +14,7 @@ def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
     PROMPT_TEMPLATE = """
     Answer Using only the following context:
     {context}
+    If the context does not contain relevant information, say "I don’t know."
     Write a newspaper article of 3 paragraphs using the above context with an interesting title using the topic from the question.
     Question: {question}
     Provide a detailed answer.
