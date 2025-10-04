@@ -7,4 +7,6 @@ if __name__ == "__main__":
 
     print("Enter you query:")
     user_query = input()
-    rag_llm_pipeline("data", user_query)
+    answer = rag_llm_pipeline("data", user_query)
+
+    print("Answer:", answer)
