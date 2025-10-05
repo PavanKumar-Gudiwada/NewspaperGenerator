@@ -58,7 +58,7 @@ def build_retriever_from_docs(
         # Load documents
         docs = load_all_data("data")
 
-        # Split documents into chunks
+        # Split documents into chunks, fixed size chunking
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size, chunk_overlap=chunk_overlap
         )

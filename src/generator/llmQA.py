@@ -1,7 +1,7 @@
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from generator.tools import get_llm
+from generator.llmModels import get_llm
 
 def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
     """
