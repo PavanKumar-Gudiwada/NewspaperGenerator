@@ -17,7 +17,7 @@ load_dotenv()
 hf_api_key = os.getenv("HUGGINGFACE_API_KEY")
 if hf_api_key:
     os.environ["HUGGINGFACE_TOKEN"] = hf_api_key
-    login()
+    login(token=hf_api_key)
 
 # Directory for FAISS index
 INDEX_DIR = "./faiss_index"
@@ -36,7 +36,7 @@ def build_retriever_from_docs(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     hf_embeddings = HuggingFaceEmbeddings(
         model_name=embedding_model_name, model_kwargs={"device": device}
-    )
+    ) #performs the tokeinization and generates embeddings for every chunk
 
     # --- Hash Check
     rebuild_required, current_data_hash = is_rebuild_required()

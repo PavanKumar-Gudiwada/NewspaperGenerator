@@ -1,2 +1,2 @@
-# NewspaperGenerator
-RAG+LLM for newspaper article generation
+# GenAI project: Newspaper Article Generator
+RAG for newspaper article generation
