@@ -1,0 +1,13 @@
+langchain
+langchain-community
+langchain-openai
+langchain-ollama
+langchain-huggingface
+huggingface-hub
+faiss-cpu
+gradio
+python-dotenv
+pypdf
+openpyxl
+"unstructured[xlsx,pdf,image]"
+torch
