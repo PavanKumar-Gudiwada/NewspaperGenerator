@@ -15,7 +15,7 @@ from retriever.hashingService import is_rebuild_required, save_current_hash, IND
 load_dotenv()
 
 # Hugging Face login
-hf_api_key = os.getenv("HUGGINGFACE_API_KEY")
+hf_api_key = os.getenv("HF_Token")
 if hf_api_key:
     os.environ["HUGGINGFACE_TOKEN"] = hf_api_key
     login(token=hf_api_key)

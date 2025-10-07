@@ -25,10 +25,10 @@ def get_llm(model_name=None, temperature=0):
     elif provider == "huggingface":
         # Use Hugging Face Hub (requires HF_TOKEN)
         model_id = model_name or os.getenv("HF_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")
-        hf_token = os.getenv("HUGGINGFACE_API_KEY")
+        hf_token = os.getenv("HF_Token")
 
         if not hf_token:
-            raise ValueError("Missing Hugging Face API token. Please set HUGGINGFACE_API_KEY env var.")
+            raise ValueError("Missing Hugging Face API token. Please set HF_Token env var.")
 
         return HuggingFaceEndpoint(
         repo_id=model_id,
