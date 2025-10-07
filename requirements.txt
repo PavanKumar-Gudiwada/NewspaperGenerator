@@ -11,3 +11,4 @@ pypdf
 openpyxl
 unstructured[xlsx,pdf,image]
 torch
+sentence-transformers
