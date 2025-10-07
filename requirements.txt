@@ -9,5 +9,5 @@ gradio
 python-dotenv
 pypdf
 openpyxl
-"unstructured[xlsx,pdf,image]"
+unstructured[xlsx,pdf,image]
 torch
