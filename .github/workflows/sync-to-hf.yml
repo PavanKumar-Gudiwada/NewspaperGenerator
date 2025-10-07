@@ -1,0 +1,26 @@
+name: Sync to Hugging Face Hub
+
+# This specifies when the workflow should run
+on:
+  push:
+    branches: [main] # Change 'main' to your main branch name if it's 'master'
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true # Essential for handling large files like models
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }} # The secret you created in Step 1
+          HF_USERNAME: GPavanKumar
+          SPACE_NAME: RAG_NewsArticleGenerator
+        
+        # This is the command that pushes the code
+        run: |
+          git push -f "https://${{ env.HF_USERNAME }}:${{ env.HF_TOKEN }}@huggingface.co/spaces/${{ env.HF_USERNAME }}/${{ env.SPACE_NAME }}" main
