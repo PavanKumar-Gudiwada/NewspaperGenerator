@@ -11,7 +11,7 @@ hf_oauth: true
 hf_oauth_scopes:
 - inference-api
 license: mit
-short_description: A RAG system to generate news articles based on provided documents.
+short_description: RAG system to generate news articles on provided documents
 fullWidth: true
 models:
   - google/embeddinggemma-300m # Example model used for embeddings
