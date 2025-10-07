@@ -1,6 +1,7 @@
 import os
 from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
+from langchain_huggingface import HuggingFaceEndpoint
 
 def get_llm(model_name=None, temperature=0):
     """
@@ -19,6 +20,21 @@ def get_llm(model_name=None, temperature=0):
         return ChatOllama(
             model=model_name or os.getenv("OLLAMA_MODEL", "llama2"),
             temperature=temperature
+        )
+    
+    elif provider == "huggingface":
+        # Use Hugging Face Hub (requires HF_TOKEN)
+        model_id = model_name or os.getenv("HF_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")
+        hf_token = os.getenv("HUGGINGFACE_API_KEY")
+
+        if not hf_token:
+            raise ValueError("Missing Hugging Face API token. Please set HUGGINGFACE_API_KEY env var.")
+
+        return HuggingFaceEndpoint(
+        repo_id=model_id,
+        task="conversational",
+        huggingfacehub_api_token=hf_token,
+        temperature=0.1,
         )
 
     else:

@@ -35,11 +35,11 @@ def run_rag(prompt: str, files_list: list):
 # 🔹 Gradio UI layout
 with gr.Blocks(title="RAG Newspaper article generator") as demo:
     gr.Markdown("## 🧩 Retrieval-Augmented Generation Assistant")
-    gr.Markdown("Upload one or more files (optional) and enter your query below:")
+    gr.Markdown("Upload one or more files and enter your prompt for newspaper article below:")
 
     with gr.Row():
         # Change label to reflect multiple files
-        file_input = gr.File(label="Upload Files (optional)", file_count="multiple") 
+        file_input = gr.File(label="Upload Files", file_count="multiple") 
         prompt_input = gr.Textbox(label="Your Prompt", placeholder="Give me the topic for the article...")
 
     with gr.Row():
