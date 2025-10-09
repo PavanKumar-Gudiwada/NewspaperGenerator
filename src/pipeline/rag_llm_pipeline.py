@@ -11,4 +11,4 @@ def rag_llm_pipeline(data_folder="data", query="What is the main topic of the do
     # 2. Generator: LLM answer using retrieved documents
     answer = run_qa_query(retriever, query, temperature=0.3)
     
-    return format_rag_response(answer)
+    return answer
