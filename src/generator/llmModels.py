@@ -1,7 +1,10 @@
 import os
+import torch
 from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
-from langchain_huggingface import HuggingFaceEndpoint
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from langchain_huggingface import HuggingFacePipeline
+from huggingface_hub import login
 
 def get_llm(model_name=None, temperature=0):
     """
@@ -23,19 +26,29 @@ def get_llm(model_name=None, temperature=0):
         )
     
     elif provider == "huggingface":
-        # Use Hugging Face Hub (requires HF_TOKEN)
-        model_id = model_name or os.getenv("HF_MODEL", "mistralai/Mistral-7B-Instruct-v0.3")
-        hf_token = os.getenv("HF_Token")
+        # Hugging Face login
+        hf_api_key = os.getenv("HF_Token")
+        if hf_api_key:
+            os.environ["HUGGINGFACE_TOKEN"] = hf_api_key
+            login(token=hf_api_key)
 
-        if not hf_token:
-            raise ValueError("Missing Hugging Face API token. Please set HF_Token env var.")
-
-        return HuggingFaceEndpoint(
-        repo_id=model_id,
-        task="conversational",
-        huggingfacehub_api_token=hf_token,
-        temperature=0.1,
+        hf_model_name = model_name or os.getenv("HF_MODEL", "gpt2")
+        tokenizer = AutoTokenizer.from_pretrained(hf_model_name)
+        model = AutoModelForCausalLM.from_pretrained(hf_model_name)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        
+        pipe = pipeline(
+            "text-generation", 
+            model=model, 
+            tokenizer=tokenizer, 
+            device=device,
+            # Set generation parameters
+            max_new_tokens=512,  # Max length for the generated article
+            temperature=temperature,
+            do_sample=True if temperature > 0 else False
         )
+        
+        return HuggingFacePipeline(pipeline=pipe)
 
     else:
         raise ValueError(f"Unsupported LLM_PROVIDER: {provider}")
