@@ -22,7 +22,7 @@ def format_rag_response(response: dict) -> str:
             paragraphs.append(line)
 
     # Build formatted display
-    parts = [f"Query: {query}\n"]
+    parts = []
     if title:
         parts.append(f"Title: {title}\n")
 
