@@ -14,6 +14,7 @@ sys.path.insert(0, src_dir) # Use insert(0, ...) to ensure it's checked first
 
 from pipeline.rag_llm_pipeline import rag_llm_pipeline
 from frontendHelpers import load_user_files_to_documents # If in a separate file
+from generator.parseOutput import parse_llm_json
 
 # 🔹 Define the Gradio interface function
 def run_rag(prompt: str, files_list: list):
@@ -29,13 +30,22 @@ def run_rag(prompt: str, files_list: list):
     # The pipeline is called with `documents=loaded_docs`.
     # If loaded_docs is None, the pipeline will fall back to the default/old logic.
     result = rag_llm_pipeline(query=prompt, documents=loaded_docs)
-    
-    return result
+
+    # --- STEP 3: Parse LLM Output ---
+    try:
+        structured = parse_llm_json(result.get("result", ""))
+        title = structured.get("title", "No title found.")
+        article = structured.get("article", "No article found.")
+        formatted_output = f"📰 **{title}**\n\n{article}"
+    except Exception as e:
+        formatted_output = f"❌ Error parsing response:\n{e}\n\nRaw Output:\n{result}"
+
+    return formatted_output
 
 # 🔹 Gradio UI layout
 with gr.Blocks(title="RAG Newspaper article generator") as demo:
-    gr.Markdown("## 🧩 Retrieval-Augmented Generation Assistant")
-    gr.Markdown("Upload one or more files and enter your prompt for newspaper article below:")
+    gr.Markdown("## 🧩 RAG Newspaper article generator")
+    gr.Markdown("Upload one or more files and enter your prompt for getting a newspaper article below:")
 
     with gr.Row():
         # Change label to reflect multiple files

@@ -1,7 +1,9 @@
 from pipeline.rag_llm_pipeline import rag_llm_pipeline
 import torch
+import json
 # Import the original loader to simulate loading the user-selected documents
 from retriever.dataLoader import load_all_data
+from generator.parseOutput import parse_llm_json
 
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -20,4 +22,7 @@ if __name__ == "__main__":
     # To test the old path, use the original call:
     answer = rag_llm_pipeline("data", user_query)
 
-    print("Answer:", answer)
+    structured_output = parse_llm_json(answer["result"])
+
+    print("Title:", structured_output.get("title", "No title found."))
+    print("Article:", structured_output.get("article", "No article found."))

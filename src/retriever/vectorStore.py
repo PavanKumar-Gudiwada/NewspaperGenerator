@@ -101,5 +101,9 @@ def build_retriever_from_docs(
     # Ensure a vector store was successfully created/loaded
     if vector_store is None:
         raise RuntimeError("Failed to build or load the vector store.")
+    
+    del hf_embeddings  # Free up memory
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()  # Clear GPU memory if used
 
     return vector_store.as_retriever(search_kwargs={"k": k})
