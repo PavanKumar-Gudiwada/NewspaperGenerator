@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+ragEnv/
+faiss_index/
+.env
+data/
+tests/
+.git/
+.vscode/

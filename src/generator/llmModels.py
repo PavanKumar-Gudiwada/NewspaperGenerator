@@ -15,8 +15,10 @@ def get_llm(model_name=None, temperature=0):
 
     if provider == "openai":
         return ChatOpenAI(
-            model_name=model_name or os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            temperature=temperature
+            model_name=model_name or os.getenv("OPENAI_MODEL", "gpt-5-mini"),
+            temperature=temperature,
+            timeout=60,
+            api_key=os.getenv("OPENAI_API_KEY")
         )
 
     elif provider == "ollama":

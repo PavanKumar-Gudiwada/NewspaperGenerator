@@ -13,7 +13,7 @@ src_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, src_dir) # Use insert(0, ...) to ensure it's checked first
 
 from pipeline.rag_llm_pipeline import rag_llm_pipeline
-from frontendHelpers import load_user_files_to_documents # If in a separate file
+from frontendHelpers import load_user_files_to_documents
 from generator.parseOutput import parse_llm_json
 
 # 🔹 Define the Gradio interface function
@@ -62,4 +62,8 @@ with gr.Blocks(title="RAG Newspaper article generator") as demo:
 
 # 🔹 Launch app
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(
+        server_name="0.0.0.0", # Allows access from external machines
+        server_port=7860,      # Default Gradio port
+        share=False             # Creates a public link via Gradio's servers
+    )
