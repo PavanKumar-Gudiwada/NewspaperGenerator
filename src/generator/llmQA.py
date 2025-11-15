@@ -1,15 +1,19 @@
-from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from langchain_core.output_parsers.json import JsonOutputParser
+from langchain.schema.runnable import RunnablePassthrough
 from generator.llmModels import get_llm
 
 
 def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
     """
-    Runs a RetrievalQA chain on the given query using the retriever.
+    Runs a retrieval → prompt → LLM → JSON parsing pipeline using LCEL.
     """
     llm = get_llm(model_name=llm_model_name, temperature=temperature)
 
-    # Define a custom prompt template
+    # Function to join retrieved docs into a single context string
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
     PROMPT_TEMPLATE = """
         Answer using only the following context:
         {context}
@@ -31,16 +35,24 @@ def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
             "article": "..."
         }}
         """
-    prompt_template = PromptTemplate(
-        input_variables=["context", "question"], template=PROMPT_TEMPLATE
+
+    prompt = PromptTemplate(
+        template=PROMPT_TEMPLATE,
+        input_variables=["context", "question"],
     )
 
-    # RetrievalQA chain combines an information retrieval system with a language model to answer questions using external data, providing factual answers.
-    qa_chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        chain_type="stuff",
-        retriever=retriever,
-        chain_type_kwargs={"prompt": prompt_template},
+    parser = JsonOutputParser()
+
+    chain = (
+        {
+            "context": retriever | format_docs,
+            "question": RunnablePassthrough(),
+        }
+        | prompt
+        | llm
+        | parser
     )
 
-    return qa_chain.invoke({"query": query})
+    response = chain.invoke(query)
+
+    return chain.invoke(query)
