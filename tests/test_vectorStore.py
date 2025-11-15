@@ -4,11 +4,12 @@ import unittest
 
 # --- Path setup to allow 'from src...' imports ---
 # Add the project root to sys.path
-print("current file",os.path.join(os.path.dirname(__file__), '..'))
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+print("current file", os.path.join(os.path.dirname(__file__), ".."))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 sys.path.insert(0, project_root)
 
 from retriever.vectorStore import build_retriever_from_docs
+
 
 class TestRAGPipeline(unittest.TestCase):
     def setUp(self):
@@ -17,7 +18,7 @@ class TestRAGPipeline(unittest.TestCase):
             embedding_model_name="google/embeddinggemma-300M",
             chunk_size=500,
             chunk_overlap=50,
-            k=5
+            k=5,
         )
 
     def test_rag_response_quality(self):
@@ -32,9 +33,12 @@ class TestRAGPipeline(unittest.TestCase):
             docs = self.retriever.get_relevant_documents(query)
             print(f"\nQuery: {query}\nRetrieved Contexts:")
             for i, doc in enumerate(docs):
-                print(f"Context {i+1}:\n{doc.page_content[:500]}...\n")  # print first 500 chars for brevity
+                print(
+                    f"Context {i+1}:\n{doc.page_content[:500]}...\n"
+                )  # print first 500 chars for brevity
             self.assertTrue(len(docs) > 0)
             self.assertTrue(all(hasattr(doc, "page_content") for doc in docs))
+
 
 if __name__ == "__main__":
     unittest.main()

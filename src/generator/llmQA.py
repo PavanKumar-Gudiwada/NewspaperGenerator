@@ -1,13 +1,12 @@
 from langchain.chains import RetrievalQA
-from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from generator.llmModels import get_llm
+
 
 def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
     """
     Runs a RetrievalQA chain on the given query using the retriever.
     """
-    # Use LLM from tools.py
     llm = get_llm(model_name=llm_model_name, temperature=temperature)
 
     # Define a custom prompt template
@@ -33,12 +32,15 @@ def run_qa_query(retriever, query, llm_model_name=None, temperature=0):
         }}
         """
     prompt_template = PromptTemplate(
-        input_variables=["context", "question"],
-        template=PROMPT_TEMPLATE
+        input_variables=["context", "question"], template=PROMPT_TEMPLATE
     )
 
     # RetrievalQA chain combines an information retrieval system with a language model to answer questions using external data, providing factual answers.
-    qa_chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", 
-                                           retriever=retriever, chain_type_kwargs={"prompt": prompt_template})
-    
+    qa_chain = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=retriever,
+        chain_type_kwargs={"prompt": prompt_template},
+    )
+
     return qa_chain.invoke({"query": query})
